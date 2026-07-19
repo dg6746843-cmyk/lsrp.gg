@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LIVE STATE - Admin Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;800&display=swap" rel="stylesheet">
+<style>
+*{ margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Montserrat', sans-serif; background: #06122b; color: white; min-height: 100vh; }
+.login-page { display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+.login-container { background: rgba(6, 18, 43, 0.85); border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); width: 100%; max-width: 400px; padding: 40px 30px; border-radius: 15px; }
+.login-container h2 { font-weight: 800; font-size: 24px; margin-bottom: 10px; letter-spacing: 1px; text-transform: uppercase; }
+.login-container p { font-size: 14px; opacity: 0.7; margin-bottom: 30px; }
+.input-group { margin-bottom: 20px; text-align: left; }
+.input-group label { display: block; font-size: 12px; font-weight: 700; margin-bottom: 8px; opacity: 0.8; }
+.input-group input, .control-box input, .control-box select, .control-box textarea { width: 100%; padding: 14px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; color: white; font-family: 'Montserrat', sans-serif; outline: none; transition: 0.2s; }
+.input-group input:focus { border-color: #e67e22; background: rgba(255, 255, 255, 0.08); }
+.btn { width: 100%; padding: 14px; background: #e67e22; color: white; border: none; border-radius: 10px; font-weight: 700; font-size: 16px; cursor: pointer; box-shadow: 0 4px 15px rgba(230, 126, 34, 0.3); transition: 0.2s; }
+.btn:hover { transform: scale(1.02); background: #d35400; }
+.msg-box { border: 1px solid; padding: 12px; border-radius: 10px; font-size: 14px; font-weight: 700; margin-bottom: 20px; }
+.msg-box.error { background: rgba(231, 76, 60, 0.2); border-color: #e74c3c; color: #e74c3c; }
+.msg-box.success { background: rgba(46, 204, 113, 0.2); border-color: #2ecc71; color: #2ecc71; }
+.dashboard-page { padding: 40px 20px; max-width: 1200px; margin: 0 auto; }
+.dash-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 20px; }
+.dash-header h1 { font-weight: 800; font-size: 28px; }
+.logout-btn { color: #e74c3c; text-decoration: none; font-weight: 700; font-size: 14px; border: 1px solid #e74c3c; padding: 8px 16px; border-radius: 8px; transition: 0.2s; cursor: pointer; }
+.logout-btn:hover { background: #e74c3c; color: white; }
+.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 30px; }
+.stat-card { background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 12px; text-align: center; }
+.stat-card h4 { font-size: 12px; opacity: 0.6; margin-bottom: 5px; text-transform: uppercase; }
+.stat-card p { font-size: 28px; font-weight: 800; color: #ffc400; }
+.grid-container { display: grid; grid-template-columns: 1fr; gap: 25px; }
+@media(min-width: 768px) { .grid-container { grid-template-columns: 2fr 1fr; } }
+.card { background: rgba(6, 18, 43, 0.85); border: 1px solid rgba(255, 255, 255, 0.1); padding: 25px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); margin-bottom: 25px; }
+.card h3 { font-weight: 700; font-size: 18px; margin-bottom: 15px; letter-spacing: 0.5px; }
+table { width: 100%; border-collapse: collapse; }
+th, td { padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); text-align: left; font-size: 14px; }
+th { font-weight: 700; opacity: 0.6; }
+.status-approved { color: #2ecc71; font-weight: 700; }
+.status-pending { color: #f1c40f; font-weight: 700; }
+.control-box { display: flex; flex-direction: column; gap: 15px; }
+.control-box input, .control-box select, .control-box textarea { padding: 12px; }
+.notice-banner { background: rgba(230, 126, 34, 0.1); border-left: 4px solid #e67e22; padding: 15px; border-radius: 4px; margin-bottom: 25px; font-size: 14px; line-height: 1.6; }
+.chat-box { height: 320px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding: 10px; background: rgba(0,0,0,0.2); border-radius: 10px; border: 1px solid rgba(255,255,255,0.1); }
+.chat-box::-webkit-scrollbar { width: 4px; }
+.chat-box::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 10px; }
+.bubble { max-width: 85%; padding: 10px 14px; border-radius: 14px; line-height: 1.4; word-wrap: break-word; font-size: 13px; display: flex; flex-direction: column; }
+.bubble.incoming { background: #16264f; align-self: flex-start; border-bottom-left-radius: 4px; }
+.bubble.outgoing { background: #e67e22; color: white; align-self: flex-end; border-bottom-right-radius: 4px; }
+.meta-tag { font-size: 11px; font-weight: 700; margin-bottom: 4px; display: flex; gap: 6px; align-items: center; }
+.meta-time { font-size: 9px; opacity: 0.5; text-align: right; margin-top: 4px; font-weight: 500; }
+.chat-form { display: flex; gap: 8px; }
+.chat-form input { flex: 1; padding: 12px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 8px; color: white; font-family: 'Montserrat', sans-serif; outline: none; }
+.chat-form button { padding: 0 20px; background: #e67e22; color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 700; transition: 0.2s; }
+.chat-form button:hover { background: #d35400; }
+.hidden { display: none; }
+</style>
+</head>
+<body>
+
+<div class="login-page" id="loginPage">
+    <div class="login-container">
+        <h2>ADMIN PORTAL</h2>
+        <p>Sign in to access control panel</p>
+        <div class="msg-box error hidden" id="msgBox"></div>
+        <form id="loginForm">
+            <div class="input-group">
+                <label>USERNAME</label>
+                <input type="text" id="username" required autocomplete="off">
+            </div>
+            <div class="input-group">
+                <label>PASSWORD</label>
+                <input type="password" id="password" required>
+            </div>
+            <button type="submit" class="btn">LOGIN / SIGN UP</button>
+        </form>
+    </div>
+</div>
+
+<div class="dashboard-page hidden" id="dashboardPage">
+    <div class="dash-header">
+        <div>
+            <h1>CONTROL PANEL</h1>
+            <p style="font-size:14px; opacity:0.7; margin-top:5px;">Welcome back, <strong style="color:#ffc400;" id="userDisplay">Admin</strong></p>
+        </div>
+        <button class="logout-btn" id="logoutBtn">LOGOUT</button>
+    </div>
+
+    <div class="notice-banner hidden" id="noticeBanner"></div>
+
+    <div class="stats-grid">
+        <div class="stat-card">
+            <h4>Verified Managers</h4>
+            <p id="totalAdmins">0</p>
+        </div>
+        <div class="stat-card">
+            <h4>Pending Approvals</h4>
+            <p style="color:#f1c40f;" id="pendingAdmins">0</p>
+        </div>
+        <div class="stat-card">
+            <h4>System Authorization</h4>
+            <p style="color:#2ecc71;">ONLINE</p>
+        </div>
+    </div>
+
+    <div class="grid-container">
+        <div class="card">
+            <h3>Staff Directory & Rosters</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>USERNAME</th>
+                        <th>RANK ROLE</th>
+                        <th>ACCESS STATUS</th>
+                    </tr>
+                </thead>
+                <tbody id="staffTable">
+                </tbody>
+            </table>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 5px;">
+            <div class="card" style="border-color: #e67e22; display: none;" id="promoteCard">
+                <h3 style="color: #e67e22;">Promote & Authorize Status</h3>
+                <form class="control-box" id="promoteForm">
+                    <input type="text" placeholder="Target Staff Username" required autocomplete="off">
+                    <select>
+                        <option value="7">Level 7 - Founder</option>
+                        <option value="6">Level 6 - Project Management</option>
+                        <option value="5">Level 5 - Special Admin</option>
+                        <option value="4">Level 4 - Project Associate</option>
+                        <option value="3">Level 3 - Chief Admin</option>
+                        <option value="2">Level 2 - Senior Administrator</option>
+                        <option value="1">Level 1 - Server Administrator</option>
+                    </select>
+                    <button type="submit" class="btn">Apply Role & Approve</button>
+                </form>
+            </div>
+
+            <div class="card" style="border-color: #ffc400; display: none;" id="noticeCard">
+                <h3 style="color: #ffc400;">Broadcast System Message</h3>
+                <form class="control-box" id="noticeForm">
+                    <textarea rows="3" placeholder="Type message parameters here..." required></textarea>
+                    <button type="submit" class="btn" style="background:#ffc400; color:#000; box-shadow: 0 4px 15px rgba(255, 196, 0, 0.3);">Post Notice</button>
+                </form>
+            </div>
+
+            <div class="card" style="border-color: #00b0ff;">
+                <h3 style="color: #00b0ff;">Secure Staff Room (Group Chat)</h3>
+                <div class="chat-box" id="chatBoxContainer"></div>
+                <form class="chat-form" id="portalChatForm">
+                    <input type="text" id="portalMsgInput" placeholder="Type a message to team..." required autocomplete="off">
+                    <button type="submit">Send</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+const roles = {
+    7: "Founder",
+    6: "Project Management",
+    5: "Special Admin",
+    4: "Project Associate",
+    3: "Chief Admin",
+    2: "Senior Administrator",
+    1: "Server Administrator"
+};
+
+const role_colors = {
+    7: "#ff1744",
+    6: "#00e676",
+    5: "#00b0ff",
+    4: "#d500f9",
+    3: "#ff9100",
+    2: "#ffea00",
+    1: "#b0bec5"
+};
+
+let currentUser = localStorage.getItem('admin_logged');
+
+// Initialize
+if (currentUser) {
+    showDashboard();
+} else {
+    showLogin();
+}
+
+function showLogin() {
+    document.getElementById('loginPage').classList.remove('hidden');
+    document.getElementById('dashboardPage').classList.add('hidden');
+}
+
+function showDashboard() {
+    document.getElementById('loginPage').classList.add('hidden');
+    document.getElementById('dashboardPage').classList.remove('hidden');
+    document.getElementById('userDisplay').textContent = currentUser;
+    loadAdminData();
+    loadChat();
+    setInterval(loadChat, 2000);
+}
+
+document.getElementById('loginForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    
+    if (username.trim() && password.trim()) {
+        localStorage.setItem('admin_logged', username);
+        localStorage.setItem('admin_rank', '7');
+        currentUser = username;
+        document.getElementById('username').value = '';
+        document.getElementById('password').value = '';
+        showDashboard();
+    }
+});
+
+document.getElementById('logoutBtn').addEventListener('click', function() {
+    localStorage.removeItem('admin_logged');
+    localStorage.removeItem('admin_rank');
+    currentUser = null;
+    showLogin();
+});
+
+function loadAdminData() {
+    const staffData = JSON.parse(localStorage.getItem('staffData') || '[]');
+    const tableBody = document.getElementById('staffTable');
+    tableBody.innerHTML = '';
+    
+    let total = 0, pending = 0;
+    
+    staffData.forEach(staff => {
+        const row = document.createElement('tr');
+        const statusClass = staff.approved ? 'status-approved' : 'status-pending';
+        const statusText = staff.approved ? 'Approved' : 'Pending';
+        const roleColor = role_colors[staff.rank] || '#fff';
+        const roleTitle = roles[staff.rank] || 'Unknown';
+        
+        row.innerHTML = `
+            <td>${staff.username}</td>
+            <td style="color:${roleColor}; font-weight:700;">${roleTitle} (Lvl ${staff.rank})</td>
+            <td><span class="${statusClass}">${statusText}</span></td>
+        `;
+        tableBody.appendChild(row);
+        
+        if (staff.approved) total++;
+        else pending++;
+    });
+    
+    document.getElementById('totalAdmins').textContent = total;
+    document.getElementById('pendingAdmins').textContent = pending;
+}
+
+document.getElementById('portalChatForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const message = document.getElementById('portalMsgInput').value.trim();
+    
+    if (message) {
+        const chatMessages = JSON.parse(localStorage.getItem('chatMessages') || '[]');
+        const time = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
+        
+        chatMessages.push({
+            username: currentUser,
+            rank: 7,
+            message: message,
+            time: time
+        });
+        
+        localStorage.setItem('chatMessages', JSON.stringify(chatMessages));
+        document.getElementById('portalMsgInput').value = '';
+        loadChat();
+    }
+});
+
+function loadChat() {
+    const chatMessages = JSON.parse(localStorage.getItem('chatMessages') || '[]');
+    const chatBox = document.getElementById('chatBoxContainer');
+    let html = '';
+    
+    chatMessages.forEach(msg => {
+        const isMe = msg.username === currentUser;
+        const bubbleType = isMe ? 'outgoing' : 'incoming';
+        const color = role_colors[msg.rank] || '#b0bec5';
+        const title = roles[msg.rank] || 'Staff';
+        
+        html += `<div class="bubble ${bubbleType}">`;
+        if (!isMe) {
+            html += `<div class="meta-tag" style="color:${color}">${msg.username} <span style="opacity:0.6;">${title}</span></div>`;
+        }
+        html += `<div>${msg.message}</div>`;
+        html += `<div class="meta-time">${msg.time}</div>`;
+        html += `</div>`;
+    });
+    
+    chatBox.innerHTML = html;
+    chatBox.scrollTop = chatBox.scrollHeight;
+}
+</script>
+
+</body>
+</html>
