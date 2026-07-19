@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chat Viewer</title>
+<style>
+body { font-family: Arial, sans-serif; background: #06122b; color: white; padding: 20px; }
+.container { max-width: 600px; margin: 0 auto; }
+h1 { text-align: center; margin-bottom: 20px; }
+.chat-messages { background: rgba(0,0,0,0.3); padding: 15px; border-radius: 10px; height: 400px; overflow-y: auto; }
+.message { background: rgba(255,255,255,0.1); padding: 10px; margin: 10px 0; border-radius: 8px; border-left: 3px solid #e67e22; }
+.message-user { color: #ffc400; font-weight: bold; }
+.message-time { color: #999; font-size: 12px; }
+</style>
+</head>
+<body>
+<div class="container">
+    <h1>Chat Messages</h1>
+    <div class="chat-messages" id="chatMessages">
+        <p style="text-align: center; opacity: 0.5;">No messages yet</p>
+    </div>
+</div>
+
+<script>
+function loadMessages() {
+    const chatMessages = JSON.parse(localStorage.getItem('chatMessages') || '[]');
+    const container = document.getElementById('chatMessages');
+    
+    if (chatMessages.length === 0) {
+        container.innerHTML = '<p style="text-align: center; opacity: 0.5;">No messages yet</p>';
+        return;
+    }
+    
+    let html = '';
+    chatMessages.forEach(msg => {
+        html += `
+            <div class="message">
+                <div class="message-user">${msg.username}</div>
+                <div>${msg.message}</div>
+                <div class="message-time">${msg.time}</div>
+            </div>
+        `;
+    });
+    
+    container.innerHTML = html;
+    container.scrollTop = container.scrollHeight;
+}
+
+loadMessages();
+setInterval(loadMessages, 1000);
+</script>
+</body>
+</html>
