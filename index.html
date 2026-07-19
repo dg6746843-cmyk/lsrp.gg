@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LIVE STATE</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;800&display=swap" rel="stylesheet">
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Montserrat',sans-serif;
+    background:#06122b;
+    color:white;
+}
+
+/* ===== HEADER ===== */
+
+.header{
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    padding:18px 20px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    z-index:10;
+}
+
+.header-logo-area {
+    display:flex;
+    align-items:center;
+}
+
+.header img{
+    height:32px;
+    margin-right:10px;
+}
+
+.header span{
+    font-weight:700;
+    font-size:18px;
+}
+
+/* ===== 3-LINE HAMBURGER MENU ===== */
+
+.menu-btn {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 24px;
+    height: 18px;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    z-index: 12;
+}
+
+.menu-btn .line {
+    width: 100%;
+    height: 3px;
+    background-color: white;
+    border-radius: 2px;
+    transition: 0.3s;
+}
+
+/* ===== DISCORD DROPDOWN MODAL ===== */
+
+.discord-menu {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 250px;
+    height: 100vh;
+    background: rgba(6, 18, 43, 0.95);
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: -5px 0 25px rgba(0, 0, 0, 0.5);
+    z-index: 11;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: 0.4s ease-in-out;
+}
+
+.discord-menu.active {
+    right: 0;
+}
+
+.dc-btn {
+    display: inline-flex;
+    align-items: center;
+    background: #5865F2;
+    color: white;
+    font-weight: 700;
+    font-size: 16px;
+    padding: 12px 25px;
+    border-radius: 10px;
+    text-decoration: none;
+    box-shadow: 0 4px 15px rgba(88, 101, 242, 0.4);
+    transition: 0.2s;
+}
+
+.dc-btn:hover {
+    transform: scale(1.05);
+    background: #4752c4;
+}
+
+.admin-btn {
+    display: inline-flex;
+    align-items: center;
+    background: #e67e22;
+    color: white;
+    font-weight: 700;
+    font-size: 16px;
+    padding: 12px 25px;
+    border-radius: 10px;
+    text-decoration: none;
+    margin-top: 15px;
+    box-shadow: 0 4px 15px rgba(230, 126, 34, 0.4);
+    transition: 0.2s;
+}
+
+.admin-btn:hover {
+    transform: scale(1.05);
+    background: #d35400;
+}
+
+/* ===== HERO ===== */
+
+.hero{
+    position:relative;
+    min-height:100vh;
+    background:url("IMG/mobile_hero.6200c54d.webp") center top no-repeat;
+    background-size:contain;
+    display:flex;
+    align-items:flex-end;
+    justify-content:center;
+    text-align:center;
+    overflow:hidden;
+}
+
+.hero::after{
+    content:"";
+    position:absolute;
+    bottom:0;
+    left:0;
+    width:100%;
+    height:50%;
+    background:linear-gradient(to top,#06122b 30%,transparent);
+}
+
+.content{
+    position:relative;
+    z-index:5;
+    width:100%;
+    max-width:420px;
+    padding:120px 20px 60px;
+}
+
+/* ===== IMAGE (clickable) ===== */
+
+.characters-link{
+    display:inline-block;
+}
+
+.characters{
+    width:100%;
+    max-width:300px;
+    margin:0 auto 25px;
+    transition:0.2s;
+}
+
+.characters:hover{
+    transform:scale(1.03);
+}
+
+/* ===== BUTTON ===== */
+
+.play-btn{
+    display:inline-block;
+    background:#ffc400;
+    color:#000;
+    font-weight:800;
+    font-size:18px;
+    padding:15px 40px;
+    border-radius:12px;
+    text-decoration:none;
+    box-shadow:0 6px 20px rgba(255,196,0,0.4);
+    transition:0.2s;
+}
+
+.play-btn:hover{
+    transform:translateY(-3px);
+}
+
+/* ===== TEXT ===== */
+
+.description{
+    margin-top:25px;
+    font-size:14px;
+    line-height:1.5;
+    opacity:0.9;
+}
+
+.online{
+    margin-top:25px;
+    background:rgba(255,255,255,0.08);
+    padding:15px 20px;
+    border-radius:12px;
+    display:inline-block;
+}
+
+.online span{
+    display:block;
+    font-size:20px;
+    font-weight:700;
+    color:#ffc400;
+    margin-top:5px;
+}
+
+/* ===== FOOTER ===== */
+
+.footer{
+    background:#06122b;
+    padding:50px 20px;
+    text-align:center;
+}
+
+.footer-links{
+    margin-bottom:25px;
+}
+
+.footer-links a{
+    display:block;
+    margin:10px 0;
+    color:#9aa3b2;
+    text-decoration:none;
+    font-size:14px;
+}
+
+.footer-links a:hover{
+    color:white;
+}
+
+.footer-logo{
+    margin:30px 0;
+}
+
+.footer-logo img{
+    height:45px;
+}
+
+.footer-logo div{
+    margin-top:10px;
+    font-weight:700;
+    font-size:16px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- ===== TOP SECTION ===== -->
+<div class="header">
+    <div class="header-logo-area">
+        <img src="IMG/LR_logo2.07caedc9.svg" alt="logo">
+        <span>LIVE STATE</span>
+    </div>
+    
+    <!-- 3 LINE BUTTON -->
+    <button class="menu-btn" id="menuBtn">
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+    </button>
+</div>
+
+<!-- ===== SLIDE OUT DISCORD & ADMIN MENU ===== -->
+<div class="discord-menu" id="discordMenu">
+    <a href="https://discord.gg/V7aQB9xvyJ" target="_blank" class="dc-btn">
+        Join Discord
+    </a>
+    <a href="admin_portal.php" class="admin-btn">
+        Admin Portal
+    </a>
+</div>
+
+<!-- ===== MAIN SCREEN ===== -->
+<section class="hero">
+    <div class="content">
+
+        <!-- CLICKABLE IMAGE -->
+        <a href=".." target="_blank" class="characters-link">
+            <img src="IMG/grut_n_rocket.39e65569.webp" class="characters" alt="">
+        </a>
+
+        <!-- Download APK with jsDelivr System -->
+        <a href="https://github.com/kevinperker58-cmd/Live-State/releases/download/Live/Launcher.apk" download class="play-btn">
+            START PLAYING
+        </a>
+
+        <div class="description">
+            A mobile online game about Russia,<br>
+            where you can become whoever you want
+        </div>
+
+        <div class="online">
+            Online:
+            <span id="onlineCount">3639</span>
+        </div>
+
+    </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+
+    <div class="footer-links">
+        <a href="https://example-forum-site.ru" target="_blank">Forum</a>
+        <a href="partners.html">Partnership</a>
+        <a href="donate.html">Top Up Account</a>
+    </div>
+
+    <div class="footer-logo">
+        <img src="IMG/LR_logo2.07caedc9.svg">
+        <div>LIVE STATE</div>
+    </div>
+
+    <div class="footer-links">
+        <a href="contacts.html">Contacts</a>
+        <a href="offer.html">Offer Agreement</a>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="restore.html">Account Recovery</a>
+    </div>
+
+</footer>
+
+<script>
+// Online counter logic
+let base = 3639;
+setInterval(()=>{
+    let random = Math.floor(Math.random()*4);
+    document.getElementById("onlineCount").textContent = base + random;
+},3000);
+
+// 3 Line and Discord Menu logic
+const menuBtn = document.getElementById('menuBtn');
+const discordMenu = document.getElementById('discordMenu');
+
+menuBtn.addEventListener('click', () => {
+    discordMenu.classList.toggle('active');
+});
+
+// Close menu if clicking outside of it
+document.addEventListener('click', (e) => {
+    if (!discordMenu.contains(e.target) && !menuBtn.contains(e.target)) {
+        discordMenu.classList.remove('active');
+    }
+});
+</script>
+
+</body>
+</html>
+
